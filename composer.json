@@ -4,6 +4,16 @@
     "type": "library",
     "description": "The SphinxQL library",
     "keywords": ["sphinx", "sphinxql"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul Galushko",
+            "email": "ministratio@gmail.com"
+        },
+        {
+            "name": "Angry Nerds"
+        }
+    ],
     "require": {
         "php": ">=5.3.3"
     },
