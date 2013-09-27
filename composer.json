@@ -8,12 +8,7 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-0": { "Nerds\\": "" }
+        "psr-0": { "Nerds\\": "src/" }
     },
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1-dev"
-        }
-    }
+    "minimum-stability": "dev"
 }
