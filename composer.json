@@ -1,5 +1,5 @@
 {
-    "name": "nerds\sphinxql",
+    "name": "nerds/sphinxql",
     "type": "library",
     "description": "The SphinxQL library",
     "keywords": ["sphinx", "sphinxql"],
