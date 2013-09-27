@@ -1,0 +1,18 @@
+{
+    "name": "nerds\sphinxql",
+    "type": "library",
+    "description": "The SphinxQL library",
+    "keywords": ["sphinx", "sphinxql"],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": { "Nerds\\": "" }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}
