@@ -1,6 +1,5 @@
 {
     "name": "nerds/sphinxql",
-    "version": "0.1.dev",
     "type": "library",
     "description": "The SphinxQL library",
     "keywords": ["sphinx", "sphinxql"],
