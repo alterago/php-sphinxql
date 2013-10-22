@@ -17,7 +17,7 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-0": { "Nerds\\": "src/" }
+        "psr-0": { "Nerds\SphinxQL\\": "src/" }
     },
     "minimum-stability": "dev"
 }
