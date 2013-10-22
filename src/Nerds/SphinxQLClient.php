@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerds\SphinxQL;
+namespace Nerds;
 use Nerds\SphinxQL\SphinxQLException;
 use \Exception;
 

@@ -1,14 +1,14 @@
 <?
-namespace Nerds\SphinxQL;
+namespace Nerds;
 
-use Nerds\SphinxQL\SphinxQLException;
-use Nerds\SphinxQL\SphinxQLClient;
-use Nerds\SphinxQL\SphinxQLQuery;
+use Nerds\SphinxQLException;
+use Nerds\SphinxQLClient;
+use Nerds\SphinxQLQuery;
 use \PHPUnit_Framework_TestCase;
 
-require_once '../SphinxQLQuery.php';
-require_once '../SphinxQL.php';
-require_once '../SphinxQLException.php';
+require_once '../src/Nerds/SphinxQLQuery.php';
+require_once '../src/Nerds/SphinxQL.php';
+require_once '../src/Nerds/SphinxQLException.php';
 
 class SphinxQLTest extends PHPUnit_Framework_TestCase
 {

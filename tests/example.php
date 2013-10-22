@@ -1,15 +1,15 @@
 <?php
-namespace Nerds\SphinxQL;
+namespace Nerds;
 
-use Nerds\SphinxQL\SphinxQLException;
-use Nerds\SphinxQL\SphinxQLClient;
-use Nerds\SphinxQL\SphinxQLQuery;
-use Nerds\SphinxQL\SphinxQL;
+use Nerds\SphinxQLException;
+use Nerds\SphinxQLClient;
+use Nerds\SphinxQLQuery;
+use Nerds\SphinxQL;
 
-require_once '../SphinxQLQuery.php';
-require_once '../SphinxQL.php';
-require_once '../SphinxQLClient.php';
-require_once '../SphinxQLException.php';
+require_once '../src/Nerds/SphinxQLQuery.php';
+require_once '../src/Nerds/SphinxQL.php';
+require_once '../src/Nerds/SphinxQLClient.php';
+require_once '../src/Nerds/SphinxQLException.php';
 
 
 $sphinx = new SphinxQL('127.0.0.1', 3307);
