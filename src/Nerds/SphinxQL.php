@@ -1,9 +1,9 @@
 <?php
 
 namespace Nerds;
-use Nerds\SphinxQL\SphinxQLException;
-use Nerds\SphinxQL\SphinxQLClient;
-use Nerds\SphinxQL\SphinxQLQuery;
+use Nerds\SphinxQLException;
+use Nerds\SphinxQLClient;
+use Nerds\SphinxQLQuery;
 use \Exception;
 
 class SphinxQL {
