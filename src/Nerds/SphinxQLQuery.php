@@ -91,7 +91,8 @@ class SphinxQLQuery {
 
     /**
      * @static
-     * @param $query
+     * @param string $queryString
+     * @return \Nerds\SphinxQLQuery
      * @throws SphinxQLException
      */
     public static function fromString($queryString) {
@@ -200,7 +201,7 @@ class SphinxQLQuery {
 
         foreach ($this->_fields as $field) {
             if (!isset($field['field']) OR !is_string($field['field'])) {
-                next;
+                continue;
             }
             if (isset($field['alias']) AND is_string($field['alias'])) {
                 $fields[] = sprintf("%s AS %s", $field['field'], $field['alias']);
@@ -299,8 +300,9 @@ class SphinxQLQuery {
     /**
      * Adds an entry to the list of indexes to be searched.
      *
-     * @param string The index to add
-     * @return Query $this
+     * @param string $index The index to add
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addIndex($index) {
         if (!is_string($index)) {
@@ -319,8 +321,9 @@ class SphinxQLQuery {
     /**
      * Removes an entry from the list of indexes to be searched.
      *
-     * @param string The index to remove
-     * @return Query $this
+     * @param string $index The index to remove
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function removeIndex($index) {
         if (!is_string($index)) {
@@ -335,9 +338,10 @@ class SphinxQLQuery {
     /**
      * Adds a entry to the list of fields to return from the query.
      *
-     * @param string Field to add
-     * @param string Alias for that field, optional
-     * @return Query $this
+     * @param string $field Field to add
+     * @param string| null $alias Alias for that field, optional
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addField($field, $alias=null) {
         if (!is_string($field)) {
@@ -364,8 +368,9 @@ class SphinxQLQuery {
      * array(array('field' => 'user_id', 'alias' => 'user')), ...)
      * The alias is optional.
      *
-     * @param $fields Array of fields to add
-     * @return Query $this
+     * @param array $fields Array of fields to add
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addFields($fields) {
         if (!is_array($fields)) {
@@ -388,8 +393,9 @@ class SphinxQLQuery {
     /**
      * Removes a field from the list of fields to search.
      *
-     * @param string Alias of the field to remove
-     * @return Query $this
+     * @param string $alias Alias of the field to remove
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function removeField($alias) {
         if (!is_string($alias)) {
@@ -408,8 +414,9 @@ class SphinxQLQuery {
     /**
      * Removes multiple fields at once from the list of fields to search.
      *
-     * @param array List of aliases of fields to remove
-     * @return Query $this
+     * @param array $array List of aliases of fields to remove
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function removeFields($array) {
         if (!is_array($array)) {
@@ -426,8 +433,9 @@ class SphinxQLQuery {
     /**
      * Sets the text to be matched against the index(es)
      *
-     * @param string Text to be searched
-     * @return Query $this
+     * @param string $search Text to be searched
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function setSearch($search) {
         if (!is_string($search)) {
@@ -442,7 +450,7 @@ class SphinxQLQuery {
     /**
      * Removes the search text from the query.
      *
-     * @return Query $this
+     * @return SphinxQLQuery $this
      */
     public function removeSearch() {
         $this->_search = null;
@@ -452,8 +460,10 @@ class SphinxQLQuery {
     /**
      * Sets the offset for the query
      *
-     * @param integer Offset
-     * @return Query $this
+     * @param int $offset Offset
+     *
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function setOffset($offset) {
         if (!is_numeric($offset)) {
@@ -467,8 +477,9 @@ class SphinxQLQuery {
     /**
      * Sets the limit for the query
      *
-     * @param integer Limit
-     * @return Query $this
+     * @param int $limit Limit
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function setLimit($limit) {
         if (!is_numeric($limit)) {
@@ -491,11 +502,12 @@ class SphinxQLQuery {
     /**
      * Adds a WHERE condition to the query.
      *
-     * @param string The field/expression for the condition
-     * @param mixed The field/expression/value to compare the field to
-     * @param string The operator (=, <, >, etc)
-     * @param string Whether or not to quote the value, defaults to true
-     * @return Query $this
+     * @param string $field The field/expression for the condition
+     * @param mixed $value The field/expression/value to compare the field to
+     * @param string $operator The operator (=, <, >, etc)
+
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addWhere($field, $value, $operator=null) {
 
@@ -537,9 +549,10 @@ class SphinxQLQuery {
     /**
      * Removes a WHERE condition from the list of conditions
      *
-     * @param string condition to remove
-     * @param string the operator
-     * @return Query $this
+     * @param string $field condition to remove
+     * @param string $operator the operator
+
+     * @return SphinxQLQuery $this
      */
     public function removeWhere($field, $operator = '=') {
         unset($this->_wheres[md5($field.$operator)]);
@@ -549,8 +562,9 @@ class SphinxQLQuery {
     /**
      * Sets the GROUP BY condition for the query.
      *
-     * @param string The field/expression for the condition
-     * @return Query $this
+     * @param string $field The field/expression for the condition
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this$this
      */
     public function addGroupBy($field) {
         if (!is_string($field)) {
@@ -564,9 +578,7 @@ class SphinxQLQuery {
     /**
      * Removes the GROUP BY condition from the query.
      *
-     * @param string The field/expression for the condition
-     * @param string The alias for the result set (optional)
-     * @return Query $this
+     * @return SphinxQLQuery $this
      */
     public function removeGroupBy() {
         $this->_group = null;
@@ -577,9 +589,10 @@ class SphinxQLQuery {
      * Sets the WITHIN GROUP ORDER BY condition for the query. This is a
      * Sphinx-specific extension to SQL.
      *
-     * @param string The field/expression for the condition
-     * @param string The sort type (can be 'asc' or 'desc', capitals are also OK)
-     * @return Query $this
+     * @param string $field The field/expression for the condition
+     * @param string $sort The sort type (can be 'asc' or 'desc', capitals are also OK)
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function groupOrder($field, $sort) {
         if (!is_string($field)) {
@@ -599,7 +612,7 @@ class SphinxQLQuery {
      * Removes the WITHIN GROUP ORDER BY condition for the query. This is a
      * Sphinx-specific extension to SQL.
      *
-     * @return Query $this
+     * @return SphinxQLQuery $this
      */
     public function removeGroupOrder() {
         $this->_groupOrder = null;
@@ -609,9 +622,11 @@ class SphinxQLQuery {
     /**
      * Adds an OPTION to the query. This is a Sphinx-specific extension to SQL.
      *
-     * @param string The option name
-     * @param string The option value
-     * @return Query $this
+     * @param string $name The option name
+     * @param string $value The option value
+     *
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addOption($name, $value) {
         if (!is_string($name)) {
@@ -626,9 +641,11 @@ class SphinxQLQuery {
     /**
      * Removes an OPTION from the query.
      *
-     * @param string The option name, optional
-     * @param string The option value, optional
-     * @return Query $this
+     * @param string $name The option name, optional
+     * @param string $value The option value, optional
+     *
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function removeOption($name = null, $value = null) {
         if (!$name) {
@@ -655,9 +672,11 @@ class SphinxQLQuery {
     /**
      * Adds an ORDER condition to the query.
      *
-     * @param string The field/expression for the condition
-     * @param string The sort type (can be 'asc' or 'desc', capitals are also OK)
-     * @return Query $this
+     * @param string $field The field/expression for the condition
+     * @param string $sort The sort type (can be 'asc' or 'desc', capitals are also OK)
+     *
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function addOrderBy($field, $sort = "asc") {
 
@@ -675,8 +694,10 @@ class SphinxQLQuery {
     /**
      * Removes an ORDER from the query.
      *
-     * @param string The option name
-     * @return Query $this
+     * @param string $field The option name
+     *
+     * @throws SphinxQLException
+     * @return SphinxQLQuery $this
      */
     public function removeOrderBy($field = null) {
         if (!$field) {

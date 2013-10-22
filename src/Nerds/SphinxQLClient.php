@@ -22,12 +22,12 @@ class SphinxQLClient {
     protected $_port = null;
 
     /**
-     * @var resource A reference to the mysql link that this client will be using
+     * @var \mysqli _handle resource A reference to the mysql link that this client will be using
      */
     protected $_handle = null;
 
     /**
-     * @var resource A reference to the mysql result returned by a query that this client has performed
+     * @var \mysqli_result resource A reference to the mysql result returned by a query that this client has performed
      */
     protected $_result = null;
 
@@ -81,8 +81,10 @@ class SphinxQLClient {
     /**
      * Perform a query
      *
-     * @param string The query to perform
+     * @param string $query The query to perform
      * @return SphinxQLClient This client object
+     * @throws SphinxQLException
+     *
      */
     public function query($query) {
         $this->_result = false;
@@ -128,12 +130,8 @@ class SphinxQLClient {
         throw new SphinxQLException ("Incorrect fetch style");
     }
 
-    /**
-     * Fetch the whole result set
-     *
-     * @return array|false The results or an error
-     */
-    public function fetchAll($fetchStyle = self::FETCH_ASSOC, $class_name = null, array $params = null) {
+
+    public function fetchAll($fetchStyle = self::FETCH_ASSOC, $class_name = null, $params = null) {
         if ($this->_result === false) {
             return false;
         }
