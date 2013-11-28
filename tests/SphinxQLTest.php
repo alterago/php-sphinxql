@@ -6,13 +6,13 @@ use Nerds\SphinxQLClient;
 use Nerds\SphinxQLQuery;
 use \PHPUnit_Framework_TestCase;
 
-require_once '../src/Nerds/SphinxQLQuery.php';
-require_once '../src/Nerds/SphinxQL.php';
-require_once '../src/Nerds/SphinxQLException.php';
+require_once 'src/Nerds/SphinxQLQuery.php';
+require_once 'src/Nerds/SphinxQL.php';
+require_once 'src/Nerds/SphinxQLException.php';
 
 class SphinxQLTest extends PHPUnit_Framework_TestCase
 {
-    private $exeption = 'Nerds\SphinxQL\SphinxQLException';
+    private $exeption = 'Nerds\SphinxQLException';
 
     public function testShouldTrowExeptionAddIntToIndex()
     {
@@ -307,12 +307,6 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $query->addOption(23, "test");
     }
 
-    public function testShouldTrowExeptionIntToValueOption() {
-        $this->setExpectedException($this->exeption);
-        $query = new SphinxQLQuery();
-        $query->addIndex('test');
-        $query->addOption('test', 23);
-    }
 
     public function testShouldAddOption() {
         $query = new SphinxQLQuery();
@@ -394,11 +388,6 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('SELECT * FROM test ORDER BY test1 asc, test2 desc LIMIT 0, 20', $query->toString());
     }
 
-    public function testShouldTrowExeptionWrongSortOrderBy() {
-        $this->setExpectedException($this->exeption);
-        $query = new SphinxQLQuery();
-        $query->addOrderBy('test', 'sort');
-    }
 
     public function testShouldTrowExeptionWrongFieldOrderBy() {
         $this->setExpectedException($this->exeption);
@@ -507,6 +496,18 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
             ->addWhere('time', $time2, '<=')
             ->addWhere('tags_i_do_not_want', array(4, 5, 6), 'NOT IN');
         $this->assertEquals("UPDATE tindex  test1=testval1,test2=testval2,test3=testval3 WHERE MATCH('this is search') AND category1 = 36 AND category2 != 0 AND time > $time AND time <= $time2 AND tags_i_do_not_want NOT IN (4,5,6) ", $query->toString());
+    }
+
+    public function testShouldInsert() {
+        $values = array('id' => 1, 'test' => 'test', 'text' => 'text');
+        $query = new SphinxQLQuery();
+        $query->addIndex('tindex');
+        $query->addInsertFields($values);
+        $query->setType(SphinxQLQuery::QUERY_INSERT);
+
+        $testSQL = "INSERT INTO tindex  ( id,test,text )  VALUES ( '1','test','text' );";
+
+        $this->assertEquals($testSQL, $query->toString());
     }
 
     public function testShouldGetQueryFromString() {

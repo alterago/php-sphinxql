@@ -116,6 +116,8 @@ class SphinxQLQuery {
                 return $this->_buildUpdate();
             case self::QUERY_FROM_STRING:
                 return $this->_query;
+            case self::QUERY_INSERT:
+                return $this->_buildInsert();
             default:
                 return $this->_buildSelect();
         }
@@ -160,6 +162,32 @@ class SphinxQLQuery {
         if (count($wheres) > 0) {
             $query .= sprintf('WHERE %s ', implode(' AND ', $wheres));
         }
+
+        return $query;
+    }
+
+    protected function _buildInsert() {
+
+        $fields = '';
+
+        if (!$this->_indexes) {
+            throw new SphinxQLException ("Not found index");
+        }
+
+        if (!$this->_fields) {
+            throw new SphinxQLException ("Not found values");
+        }
+
+        $query = 'INSERT INTO ';
+        $query .= $this->_buildIndexes();
+
+        foreach ($this->_fields as $field => $value) {
+            $fields[] = $field;
+            $values[] = "'" . $value . "'";
+        }
+
+        $query .= ' (' . sprintf(' %s ', implode(',', $fields)) . ") ";
+        $query .= ' VALUES (' . sprintf(' %s ', implode(',', $values)) . ");";
 
         return $query;
     }
@@ -359,6 +387,20 @@ class SphinxQLQuery {
 
     public function addUpdateField($field, $value) {
         $this->_fields[$field] = $value;
+        return $this;
+    }
+
+    public function addInsertFields($fields) {
+        if (!is_array($fields)) {
+            throw new SphinxQLException ("fields is not array");
+        }
+
+        foreach ($fields as $field => $value) {
+            if (!is_string($field)) {
+                throw new SphinxQLException ("field is not string");
+            }
+            $this->_fields[$field] = $value;
+        }
         return $this;
     }
 
