@@ -516,5 +516,4 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException($this->exeption);
         $query = SphinxQLQuery::fromString(123);
     }
-
 }
