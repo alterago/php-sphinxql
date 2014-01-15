@@ -4,6 +4,7 @@ namespace Nerds;
 use Nerds\SphinxQLException;
 use Nerds\SphinxQLClient;
 use Nerds\SphinxQLQuery;
+
 use \PHPUnit_Framework_TestCase;
 
 require_once 'src/Nerds/SphinxQLQuery.php';
@@ -468,7 +469,7 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $query = new SphinxQLQuery();
         $query->setType(SphinxQLQuery::QUERY_SET);
         $query->addOption('test_name', 'test_value');
-        $this->assertEquals('SET test_name = test_value;', $query->toString());
+        $this->assertEquals('SET test_name = test_value', $query->toString());
     }
 
     public function testShouldAddDelete() {
@@ -476,7 +477,7 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $query->setType(SphinxQLQuery::QUERY_DELETE);
         $query->addIndex('test');
         $query->setId(123);
-        $this->assertEquals('DELETE FROM test WHERE id = 123;', $query->toString());
+        $this->assertEquals('DELETE FROM test WHERE id = 123', $query->toString());
 
     }
 
@@ -505,14 +506,14 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $query->addInsertFields($values);
         $query->setType(SphinxQLQuery::QUERY_INSERT);
 
-        $testSQL = "INSERT INTO tindex  ( id,test,text )  VALUES ( '1','test','text' );";
+        $testSQL = "INSERT INTO tindex  ( id,test,text )  VALUES ( '1','test','text' )";
 
         $this->assertEquals($testSQL, $query->toString());
     }
 
     public function testShouldGetQueryFromString() {
-        $query = SphinxQLQuery::fromString('DELETE FROM test WHERE id = 123;');
-        $this->assertEquals('DELETE FROM test WHERE id = 123;', $query->toString());
+        $query = SphinxQLQuery::fromString('DELETE FROM test WHERE id = 123');
+        $this->assertEquals('DELETE FROM test WHERE id = 123', $query->toString());
         $this->setExpectedException($this->exeption);
         $query = SphinxQLQuery::fromString(123);
     }

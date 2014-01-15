@@ -187,23 +187,23 @@ class SphinxQLQuery {
         }
 
         $query .= ' (' . sprintf(' %s ', implode(',', $fields)) . ") ";
-        $query .= ' VALUES (' . sprintf(' %s ', implode(',', $values)) . ");";
+        $query .= ' VALUES (' . sprintf(' %s ', implode(',', $values)) . ")";
 
         return $query;
     }
 
     protected function _buildShow() {
-        return "SHOW " . $this->_typeShow . ";";
+        return "SHOW " . $this->_typeShow . "";
 
     }
 
     protected function _buildSet() {
         $option = $this->_options[0];
-        return "SET " . $option['name'] . ' = ' . $option['value'] . ";";
+        return "SET " . $option['name'] . ' = ' . $option['value'] . "";
     }
 
     protected function _buildDelete() {
-        return "DELETE FROM " . $this->_buildIndexes() . "WHERE id = " . $this->_id . ";";
+        return "DELETE FROM " . $this->_buildIndexes() . "WHERE id = " . $this->_id . "";
     }
 
     protected function _escape_query ( $string ) {
