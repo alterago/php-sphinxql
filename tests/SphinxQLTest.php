@@ -456,11 +456,11 @@ class SphinxQLTest extends PHPUnit_Framework_TestCase
         $query = new SphinxQLQuery();
         $query->setType(SphinxQLQuery::QUERY_SHOW);
         $query->setTypeShow('meta');
-        $this->assertEquals('SHOW META;', $query->toString());
+        $this->assertEquals('SHOW META', $query->toString());
         $query->setTypeShow('WARNINGS');
-        $this->assertEquals('SHOW WARNINGS;', $query->toString());
+        $this->assertEquals('SHOW WARNINGS', $query->toString());
         $query->setTypeShow('status');
-        $this->assertEquals('SHOW STATUS;', $query->toString());
+        $this->assertEquals('SHOW STATUS', $query->toString());
         $this->setExpectedException($this->exeption);
         $query->setTypeShow('test');
     }

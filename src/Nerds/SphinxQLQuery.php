@@ -96,6 +96,7 @@ class SphinxQLQuery {
      * @throws SphinxQLException
      */
     public static function fromString($queryString) {
+
         $query = new self();
         $query->setQuery($queryString);
         $query->setType(self::QUERY_FROM_STRING);
@@ -152,7 +153,7 @@ class SphinxQLQuery {
         $query .= sprintf(' %s ', implode(',', $fields));
 
         if (is_string($this->_search)) {
-            $wheres[] = sprintf("MATCH('%s')", $this->_escape_query($this->_search));
+            $wheres[] = sprintf("MATCH('%s')", $this->_escapeQuery($this->_search));
         }
 
         foreach ($this->_wheres as $where) {
@@ -206,11 +207,11 @@ class SphinxQLQuery {
         return "DELETE FROM " . $this->_buildIndexes() . "WHERE id = " . $this->_id . "";
     }
 
-    protected function _escape_query ( $string ) {
+    protected function _escapeQuery ( $string ) {
         $qoute_count = substr_count($string, '"');
         if ($qoute_count % 2)
             $string = str_replace('"', '', $string);
-        $from = array (   '\\',    '(',    ')',     '!',    '@',    '~',    '&',    '/',    '^',    '$',    '=',   "'",  "\x00",  "\n",  "\r",  "\x1a" );
+        $from = array (   '\\',    '(',    ')',     '!',    '~',    '&',    '/',    '^',    '$',    '=',   "'",  "\x00",  "\n",  "\r",  "\x1a" );
         $to   = array ( '\\\\', '\\\(', '\\\)',  '\\\!', '\\\@', '\\\~', '\\\&', '\\\/', '\\\^', '\\\$', '\\\=', "\\'", "\\x00", "\\n", "\\r", "\\x1a" );
         return str_replace ( $from, $to, $string );
     }
@@ -241,7 +242,7 @@ class SphinxQLQuery {
         unset($field);
 
         if (is_string($this->_search)) {
-            $wheres[] = sprintf("MATCH('%s')", $this->_escape_query(($this->_search)));
+            $wheres[] = sprintf("MATCH('%s')", $this->_escapeQuery(($this->_search)));
         }
 
         foreach ($this->_wheres as $where) {
@@ -299,6 +300,7 @@ class SphinxQLQuery {
         if (!is_string($query)) {
             throw new SphinxQLException ("Query is not string");
         }
+
         $this->_query = $query;
     }
 
@@ -322,6 +324,7 @@ class SphinxQLQuery {
     }
 
     public function setId($id) {
+        $id = $this->_escapeQuery($id);
         $this->_id = $id;
     }
 
@@ -340,6 +343,7 @@ class SphinxQLQuery {
         if (in_array($index, $this->_indexes)) {
             throw new SphinxQLException ("index with the same name already exists");
         }
+        $index = $this->_escapeQuery($index);
 
         $this->_indexes[] = $index;
 
@@ -379,6 +383,11 @@ class SphinxQLQuery {
         if (!is_string($alias)) {
             $alias = null;
         }
+        $field = $this->_escapeQuery($field);
+        if ($alias) {
+            $alias = $this->_escapeQuery($alias);
+        }
+
 
         $this->_fields[] = array('field' => $field, 'alias' => $alias);
 
@@ -386,6 +395,9 @@ class SphinxQLQuery {
     }
 
     public function addUpdateField($field, $value) {
+        $field = $this->_escapeQuery($field);
+        $value = $this->_escapeQuery($value);
+
         $this->_fields[$field] = $value;
         return $this;
     }
@@ -399,6 +411,8 @@ class SphinxQLQuery {
             if (!is_string($field)) {
                 throw new SphinxQLException ("field is not string");
             }
+            $field = $this->_escapeQuery($field);
+            $value = $this->_escapeQuery($value);
             $this->_fields[$field] = $value;
         }
         return $this;
@@ -426,6 +440,11 @@ class SphinxQLQuery {
             if (!isset($entry['alias']) OR !is_string($entry['alias'])) {
                 $entry['alias'] = null;
             }
+            $entry['field'] = $this->_escapeQuery($entry['field']);
+            if ($entry['alias']) {
+                $entry['alias'] = $this->_escapeQuery($entry['alias']);
+            }
+
             $this->addField($entry['field'], $entry['alias']);
         }
 
@@ -484,6 +503,7 @@ class SphinxQLQuery {
             throw new SphinxQLException ("search is not string");
         }
 
+        $search = $this->_escapeQuery($search);
         $this->_search = $search;
 
         return $this;
@@ -561,10 +581,20 @@ class SphinxQLQuery {
             throw new SphinxQLException ("Wrong operator");
         }
 
+        if (is_array($value)) {
+            foreach ($value as $key => $vl) {
+                $value[$key] = $this->_escapeQuery($value[$key]);
+            }
+        } else {
+            $value = $this->_escapeQuery($value);
+        }
+
+
         if (in_array($operator, array('NOT IN', 'IN'))) {
             if (!is_array($value)) {
                 throw new SphinxQLException ("value should be an array");
             }
+
             $value = "(" . implode(",", $value) . ")";
         }
 
@@ -575,6 +605,8 @@ class SphinxQLQuery {
             $value = implode(" AND ", $value);
         }
 
+
+
         if (!is_string($field)) {
             throw new SphinxQLException ("field is not string");
         }
@@ -582,6 +614,8 @@ class SphinxQLQuery {
         if (!is_string($value)) {
             $value = (string) $value;
         }
+
+        $field = $this->_escapeQuery($field);
 
         $this->_wheres[md5($field.$operator)] = array('field' => $field, 'operator' => $operator, 'value' => $value);
 
@@ -612,6 +646,7 @@ class SphinxQLQuery {
         if (!is_string($field)) {
             throw new SphinxQLException ("group by field is not string");
         }
+        $field = $this->_escapeQuery($field);
         $this->_group = $field;
 
         return $this;
@@ -645,6 +680,9 @@ class SphinxQLQuery {
             throw new SphinxQLException ("GROUP ORDER BY sort is not string");
         }
 
+        $field = $this->_escapeQuery($field);
+        $sort = $this->_escapeQuery($sort);
+
         $this->_groupOrder = array('field' => $field, 'sort' => $sort);
 
         return $this;
@@ -674,6 +712,13 @@ class SphinxQLQuery {
         if (!is_string($name)) {
             throw new SphinxQLException ("OPTION name is not string");
         }
+
+        if (!is_string($value)) {
+            throw new SphinxQLException ("OPTION value is not string");
+        }
+
+        $name = $this->_escapeQuery($name);
+        $value = $this->_escapeQuery($value);
 
         $this->_options[] = array('name' => $name, 'value' => $value);
 
@@ -727,6 +772,8 @@ class SphinxQLQuery {
         if (!is_string($field)) {
             throw new SphinxQLException ("order field is not string");
         }
+
+        $field = $this->_escapeQuery($field);
 
         $this->_orders[] = array('field' => $field, 'sort' => $sort);
 
