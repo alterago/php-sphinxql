@@ -1,9 +1,6 @@
 <?
-namespace Nerds;
+namespace Nerds\SphinxQL;
 
-use Nerds\SphinxQLException;
-use Nerds\SphinxQLClient;
-use Nerds\SphinxQLQuery;
 
 use \PHPUnit_Framework_TestCase;
 
@@ -13,7 +10,7 @@ require_once 'src/Nerds/SphinxQLException.php';
 
 class SphinxQLTest extends PHPUnit_Framework_TestCase
 {
-    private $exeption = 'Nerds\SphinxQLException';
+    private $exeption = 'Nerds\SphinxQL\SphinxQLException';
 
     public function testShouldTrowExeptionAddIntToIndex()
     {

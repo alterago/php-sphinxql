@@ -1,6 +1,6 @@
 <?php
-namespace Nerds;
-use Nerds\SphinxQL;
+namespace Nerds\SphinxQL;
+use Nerds\SphinxQL\SphinxQL;
 
 class SphinxQLQuery {
 

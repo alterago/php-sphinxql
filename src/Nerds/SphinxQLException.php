@@ -1,5 +1,5 @@
 <?php
-namespace Nerds;
+namespace Nerds\SphinxQL;
 
 class SphinxQLException extends \RuntimeException {
     public function __construct($message = 'SphinxQL Exception', \Exception $previous = null) {

@@ -1,10 +1,7 @@
 <?php
-namespace Nerds;
+namespace Nerds\SphinxQL;
 
-use Nerds\SphinxQLException;
-use Nerds\SphinxQLClient;
-use Nerds\SphinxQLQuery;
-use Nerds\SphinxQL;
+use Nerds\SphinxQL\SphinxQL;
 
 require_once '../src/Nerds/SphinxQLQuery.php';
 require_once '../src/Nerds/SphinxQL.php';
