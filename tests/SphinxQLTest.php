@@ -4,9 +4,9 @@ namespace Nerds\SphinxQL;
 
 use \PHPUnit_Framework_TestCase;
 
-require_once 'src/Nerds/SphinxQLQuery.php';
-require_once 'src/Nerds/SphinxQL.php';
-require_once 'src/Nerds/SphinxQLException.php';
+require_once 'src/Nerds/SphinxQL/SphinxQLQuery.php';
+require_once 'src/Nerds/SphinxQL/SphinxQL.php';
+require_once 'src/Nerds/SphinxQL/SphinxQLException.php';
 
 class SphinxQLTest extends PHPUnit_Framework_TestCase
 {
