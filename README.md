@@ -126,3 +126,5 @@ addIndex('tindex') - добавить индекс
 addUpdateField('test1', 'testval1') = добавить поле на обновление, Первое название поля, второе значение
 Блок addWhere и search такой же как в select
 В случае ошибки прилетает Nerds\SphinxQL\SphinxQLException
+
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/alterago/php-sphinxql?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
